@@ -1,0 +1,303 @@
+ <!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PureBloom — Naklejki na pryszcze</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rose-50: #fdf2f5; --rose-100: #fbe8ed; --rose-200: #f5ccd8;
+    --rose-300: #ecaabf; --rose-400: #dc7a99; --rose-500: #c9547a;
+    --rose-600: #a83c61; --text-dark: #2c1a22; --text-mid: #6b3d52;
+    --text-light: #a07080; --white: #ffffff; --cream: #fdf8f9;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--rose-200); padding: 0 60px; display: flex; align-items: center; justify-content: space-between; height: 72px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; letter-spacing: 3px; color: var(--text-dark); text-transform: uppercase; text-decoration: none; }
+  .logo span { color: var(--rose-400); }
+  nav { display: flex; gap: 36px; }
+  nav a { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-mid); text-decoration: none; transition: color .2s; }
+  nav a:hover { color: var(--rose-500); }
+
+  .hero { min-height: 88vh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+  .hero-left { background: linear-gradient(145deg, var(--rose-50) 0%, var(--rose-100) 100%); display: flex; flex-direction: column; justify-content: center; padding: 80px 72px; }
+  .hero-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rose-500); margin-bottom: 20px; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; line-height: 1.1; color: var(--text-dark); margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--rose-500); }
+  .hero-sub { font-size: 15px; font-weight: 300; color: var(--text-mid); line-height: 1.8; max-width: 380px; margin-bottom: 44px; }
+  .btn-primary { display: inline-block; background: var(--text-dark); color: var(--white); padding: 14px 40px; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background .25s, transform .15s; }
+  .btn-primary:hover { background: var(--rose-600); transform: translateY(-1px); }
+
+  .hero-right { background: var(--rose-200); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .hero-decor { position: absolute; border-radius: 50%; background: rgba(255,255,255,.35); }
+  .hero-decor.d1 { width: 400px; height: 400px; top: -80px; right: -80px; }
+  .hero-decor.d2 { width: 200px; height: 200px; bottom: 40px; left: 20px; }
+  .hero-decor.d3 { width: 100px; height: 100px; top: 40%; left: 60px; }
+
+  .patches-display { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .patches-row { display: flex; gap: 16px; align-items: center; }
+  .patch { border-radius: 50%; background: rgba(255,255,255,0.82); border: 1.5px solid rgba(255,255,255,0.95); box-shadow: 0 4px 20px rgba(180,80,110,.15); display: flex; align-items: center; justify-content: center; animation: floatPatch 4s ease-in-out infinite alternate; }
+  .patch:nth-child(2) { animation-delay: .8s; }
+  .patch:nth-child(3) { animation-delay: 1.6s; }
+  .patch.lg { width: 90px; height: 90px; }
+  .patch.md { width: 64px; height: 64px; }
+  .patch.sm { width: 44px; height: 44px; }
+  .patch.used { background: rgba(220,122,153,0.25); border-color: rgba(220,122,153,0.6); }
+  .patch-inner { border-radius: 50%; background: rgba(245,204,216,.4); }
+  .patch.lg .patch-inner { width: 56px; height: 56px; }
+  .patch.md .patch-inner { width: 38px; height: 38px; }
+  .patch.sm .patch-inner { width: 26px; height: 26px; }
+  @keyframes floatPatch { from { transform: translateY(0); } to { transform: translateY(-14px); } }
+  .patch-label { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--rose-600); text-align: center; margin-top: 4px; }
+
+  .products { padding: 120px 60px; background: var(--white); }
+  .section-header { text-align: center; margin-bottom: 80px; }
+  .section-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rose-400); margin-bottom: 16px; }
+  .section-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--text-dark); }
+
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto; }
+  .product-card { background: var(--cream); border: 1px solid var(--rose-200); padding: 48px 48px 40px; position: relative; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(180,80,110,.1); }
+  .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--rose-300), var(--rose-500)); }
+  .product-number { font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300; color: var(--rose-100); position: absolute; top: 16px; right: 28px; line-height: 1; }
+
+  .card-visual { display: flex; justify-content: center; gap: 10px; margin-bottom: 32px; align-items: center; }
+  .card-patch { border-radius: 50%; background: rgba(255,255,255,.9); border: 1.5px solid var(--rose-300); box-shadow: 0 2px 12px rgba(180,80,110,.12); }
+  .card-patch.lg { width: 72px; height: 72px; }
+  .card-patch.md { width: 52px; height: 52px; }
+  .card-patch.sm { width: 36px; height: 36px; }
+  .card-patch.used { background: rgba(220,122,153,.18); border-color: var(--rose-400); }
+
+  .product-badge { display: inline-block; background: var(--rose-100); color: var(--rose-600); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 16px; }
+  .product-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: var(--text-dark); line-height: 1.15; margin-bottom: 8px; }
+  .product-subtitle { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); margin-bottom: 20px; }
+  .product-desc { font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--text-mid); margin-bottom: 28px; }
+  .ingredient-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .ingredient { background: var(--white); border: 1px solid var(--rose-200); color: var(--text-mid); font-size: 11px; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .price { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text-dark); }
+  .price span { font-size: 14px; color: var(--text-light); font-family: 'Jost', sans-serif; font-weight: 300; margin-left: 4px; }
+  .btn-add { background: var(--rose-400); color: var(--white); border: none; padding: 12px 28px; font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background .2s, transform .15s; }
+  .btn-add:hover { background: var(--rose-500); transform: scale(1.02); }
+
+  .how { padding: 120px 60px; background: var(--rose-50); }
+  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1000px; margin: 0 auto; }
+  .how h2 { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; color: var(--text-dark); margin-bottom: 36px; }
+  .how-step { display: flex; gap: 20px; margin-bottom: 28px; align-items: flex-start; }
+  .how-num { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: var(--rose-200); color: var(--rose-600); font-family: 'Cormorant Garamond', serif; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .how-step-text h3 { font-size: 15px; font-weight: 400; color: var(--text-dark); margin-bottom: 4px; }
+  .how-step-text p { font-size: 13px; font-weight: 300; color: var(--text-mid); line-height: 1.7; }
+  .how-visual { background: var(--rose-100); border-radius: 2px; min-height: 360px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .how-visual::before { content: ''; position: absolute; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,.5); top: -60px; right: -60px; }
+  .big-patch-demo { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 40px; }
+  .demo-patch { border-radius: 50%; border: 1.5px solid rgba(255,255,255,.9); background: rgba(255,255,255,.75); box-shadow: 0 3px 16px rgba(180,80,110,.12); display: flex; align-items: center; justify-content: center; }
+  .demo-patch.s1 { width: 80px; height: 80px; }
+  .demo-patch.s2 { width: 60px; height: 60px; margin-top: 20px; }
+  .demo-patch.s3 { width: 60px; height: 60px; }
+  .demo-patch.s4 { width: 80px; height: 80px; margin-top: -10px; }
+  .demo-inner { border-radius: 50%; background: rgba(220,122,153,.2); }
+  .demo-patch.s1 .demo-inner, .demo-patch.s4 .demo-inner { width: 48px; height: 48px; }
+  .demo-patch.s2 .demo-inner, .demo-patch.s3 .demo-inner { width: 34px; height: 34px; }
+  .demo-patch.used-d { background: rgba(220,122,153,.22); border-color: var(--rose-300); }
+
+  .benefits { background: var(--text-dark); padding: 60px; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .benefit-item { padding: 0 40px; border-right: 1px solid rgba(255,255,255,.1); text-align: center; }
+  .benefit-item:last-child { border-right: none; }
+  .benefit-icon { font-size: 28px; margin-bottom: 14px; }
+  .benefit-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--rose-200); margin-bottom: 6px; }
+  .benefit-desc { font-size: 12px; font-weight: 300; color: rgba(255,255,255,.45); line-height: 1.6; }
+
+  footer { background: var(--white); border-top: 1px solid var(--rose-200); padding: 40px 60px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); }
+  .footer-copy { font-size: 12px; color: var(--text-light); }
+
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="kosmetyki.html" class="logo">Pure<span>Bloom</span></a>
+  <nav>
+    <a href="#produkty">Produkty</a>
+    <a href="#jak-dzialaja">Jak działają?</a>
+    <a href="o-nas.html">O nas</a>
+    <a href="kontakt.html">Kontakt</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Hydrokoloidowe patche na pryszcze</p>
+    <h1>Jeden plasterek.<br><em>Zero</em> wyciskania.</h1>
+    <p class="hero-sub">Przezroczyste naklejki hydrokoloidowe, które wchłaniają wydzielinę, chronią przed bakteriami i przyspieszają gojenie — przez noc.</p>
+    <a href="#produkty" class="btn-primary">Wybierz swój rozmiar</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-decor d1"></div>
+    <div class="hero-decor d2"></div>
+    <div class="hero-decor d3"></div>
+    <div class="patches-display">
+      <div class="patches-row">
+        <div class="patch lg"><div class="patch-inner"></div></div>
+        <div class="patch md used"><div class="patch-inner"></div></div>
+        <div class="patch sm"><div class="patch-inner"></div></div>
+      </div>
+      <div class="patches-row">
+        <div class="patch sm"><div class="patch-inner"></div></div>
+        <div class="patch lg used"><div class="patch-inner"></div></div>
+        <div class="patch md"><div class="patch-inner"></div></div>
+      </div>
+      <p class="patch-label">różne rozmiary — każdy pryszcz ma swój</p>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="produkty">
+  <div class="section-header fade-in">
+    <p class="section-tag">Dwa warianty</p>
+    <h2>Znajdź swój rozmiar</h2>
+  </div>
+  <div class="product-grid">
+
+    <div class="product-card fade-in">
+      <div class="product-number">01</div>
+      <div class="card-visual">
+        <div class="card-patch lg"></div>
+        <div class="card-patch md"></div>
+        <div class="card-patch sm"></div>
+      </div>
+      <div class="product-badge">Bestseller</div>
+      <h3 class="product-name">Daily Patch<br>Mix</h3>
+      <p class="product-subtitle">Zestaw 3 rozmiarów · 36 sztuk</p>
+      <p class="product-desc">Opakowanie z patchami małymi (10 mm), średnimi (12 mm) i dużymi (14 mm) — do każdego pryszcza idealny rozmiar. Przezroczyste, cienkie, niewidoczne pod makijażem. Działają przez 6–8 godzin.</p>
+      <div class="ingredient-list">
+        <span class="ingredient">Hydrokoloid</span>
+        <span class="ingredient">Bez lateksu</span>
+        <span class="ingredient">Dermatologicznie testowane</span>
+        <span class="ingredient">Wegańskie</span>
+      </div>
+      <div class="product-footer">
+        <div class="price">29 zł<span>/ 36 szt.</span></div>
+        <button class="btn-add" onclick="addToCart(this)">Do koszyka</button>
+      </div>
+    </div>
+
+    <div class="product-card fade-in">
+      <div class="product-number">02</div>
+      <div class="card-visual">
+        <div class="card-patch lg used"></div>
+        <div class="card-patch lg used"></div>
+      </div>
+      <div class="product-badge">Nocna kuracja</div>
+      <h3 class="product-name">Night Patch<br>XL</h3>
+      <p class="product-subtitle">Rozmiar XXL · 20 sztuk</p>
+      <p class="product-desc">Większy plasterek (16 mm) specjalnie na noc — zakrywa pryszcze głębiej i skuteczniej. Wzmocniona warstwa hydrokoloidu działa intensywnie przez 8–12 godzin snu. Wstaniesz z mniejszym pryszczem.</p>
+      <div class="ingredient-list">
+        <span class="ingredient">Hydrokoloid Premium</span>
+        <span class="ingredient">16 mm średnica</span>
+        <span class="ingredient">Wzmocniona przyczepność</span>
+        <span class="ingredient">Bez lateksu</span>
+      </div>
+      <div class="product-footer">
+        <div class="price">24 zł<span>/ 20 szt.</span></div>
+        <button class="btn-add" onclick="addToCart(this)">Do koszyka</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="how" id="jak-dzialaja">
+  <div class="how-grid">
+    <div>
+      <div class="section-tag fade-in">Jak to działa?</div>
+      <h2 class="fade-in">Nauka w prostej naklejce</h2>
+      <div class="how-step fade-in">
+        <div class="how-num">1</div>
+        <div class="how-step-text">
+          <h3>Przyklej na czysty pryszcz</h3>
+          <p>Umyj twarz, osusz skórę. Przyklej patch bezpośrednio na pryszcza — im wcześniej, tym lepiej.</p>
+        </div>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-num">2</div>
+        <div class="how-step-text">
+          <h3>Hydrokoloid wchłania wydzielinę</h3>
+          <p>Materiał tworzy wilgotne środowisko, które wyciąga wydzielinę bez wyciskania. Zero blizn.</p>
+        </div>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-num">3</div>
+        <div class="how-step-text">
+          <h3>Rano zdejmujesz — pryszcz mniejszy</h3>
+          <p>Patch zmieni kolor na biały — to znak, że zadziałał. Pryszcz jest zredukowany, nie podrażniony.</p>
+        </div>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-num">4</div>
+        <div class="how-step-text">
+          <h3>Chroni przed dotykaniem</h3>
+          <p>Przez cały dzień patch działa jak tarcza — zero bakterii z palców, zero przypadkowego wyciskania.</p>
+        </div>
+      </div>
+    </div>
+    <div class="how-visual fade-in">
+      <div class="big-patch-demo">
+        <div class="demo-patch s1"><div class="demo-inner"></div></div>
+        <div class="demo-patch s2 used-d"><div class="demo-inner"></div></div>
+        <div class="demo-patch s3"><div class="demo-inner"></div></div>
+        <div class="demo-patch s4 used-d"><div class="demo-inner"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="benefits fade-in">
+  <div class="benefit-item">
+    <div class="benefit-icon">🔬</div>
+    <div class="benefit-title">Hydrokoloid medyczny</div>
+    <div class="benefit-desc">Ta sama technologia co w opatrunkach szpitalnych — sprawdzona dekadami</div>
+  </div>
+  <div class="benefit-item">
+    <div class="benefit-icon">👁</div>
+    <div class="benefit-title">Niewidoczne w ciągu dnia</div>
+    <div class="benefit-desc">Ultra-cienkie, przezroczyste. Możesz nałożyć korektor na wierzch</div>
+  </div>
+  <div class="benefit-item">
+    <div class="benefit-icon">🌙</div>
+    <div class="benefit-title">Działa przez noc</div>
+    <div class="benefit-desc">8–12 godzin ciągłego działania — wstajesz z mniejszym pryszczem</div>
+  </div>
+  <div class="benefit-item">
+    <div class="benefit-icon">🚫</div>
+    <div class="benefit-title">Bez wyciskania</div>
+    <div class="benefit-desc">Koniec z bliznami i przebarwieniami po mechanicznym drażnieniu skóry</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">PureBloom</div>
+  <div class="footer-copy">© 2025 PureBloom. Wszelkie prawa zastrzeżone.</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*120); });
+  }, {threshold:0.12});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  function addToCart(btn) {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Dodano';
+    btn.style.background = '#3b6d11';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2000);
+  }
+</script>
+</body>
+</html>
